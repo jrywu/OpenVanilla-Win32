@@ -1,0 +1,94 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(8CF074A6-A7A0-4666-AA49-AAFA23D7D2CD),
+	version(0.8),
+	helpstring("MVsip 0.8 Type Library")
+]
+library MVSIPLib
+{
+    import "oaidl.idl";
+    import "ocidl.idl";
+    import "sip_api.idl";
+
+
+    //
+    // ImInfo provided by the IM.
+    //
+    typedef struct _tagImInfo {
+        DWORD cbSize;
+		HANDLE hImageNarrow;
+        HANDLE hImageWide;
+		int iNarrow;
+        int iWide;
+        DWORD fdwFlags;
+        RECT rcSipRect;
+    } IMINFO;
+
+
+    [ uuid(42429669-ae04-11d0-a4f8-00aa00a749b9) , helpstring("IIMCallback") ]
+
+    interface IIMCallback : IUnknown
+    {                
+      [id(0)] HRESULT SetImInfo( IMINFO *pimi );  
+      [id(1)] HRESULT SendVirtualKey( BYTE bVK, DWORD dwFlags );  
+      [id(2)] HRESULT SendCharEvents( UINT uVK, UINT uKeyFlags, UINT uChars, UINT *puShift, UINT *puChars );  
+      [id(3)] HRESULT SendString( BSTR ptszStr, DWORD dwChars );  
+    }
+
+	[ uuid(9DDB3920-3606-11d2-A2EB-0000F8757270) , helpstring("IIMCallbackEx") ]
+	interface IIMCallbackEx : IIMCallback
+	{
+	 [helpstring("method SetImInfo")] HRESULT SetImInfo(long *pimi);
+	 [helpstring("method SendVirtualKey")] HRESULT SendVirtualKey(BYTE bVK, DWORD dwFlags);
+	 [helpstring("method SendCharEvents")] HRESULT SendCharEvents(UINT uVK, UINT uKeyFlags, UINT uChars, UINT *puShift, UINT *puChars);
+	 [helpstring("method SendString")] HRESULT SendString(BSTR ptszStr, DWORD dwChars);
+	 [helpstring("method SendAlternatives")] HRESULT SendAlternatives(long * plmd);
+	}
+	
+
+    [  uuid(42429666-ae04-11d0-a4f8-00aa00a749b9), helpstring("IInputMethod")  ]
+
+    interface IInputMethod : IUnknown
+    {                
+      [id(0)] HRESULT Select([in] HWND hwndSip );  
+      [id(1)] HRESULT Deselect(void);  
+      [id(2)] HRESULT Showing(void);  
+      [id(3)] HRESULT Hiding(void);  
+      [id(4)] HRESULT GetInfo([out] IMINFO *pimi );  
+      [id(5)] HRESULT ReceiveSipInfo([in] SIPINFO *psi);  
+      [id(6)] HRESULT RegisterCallback([in] IIMCallback* lpIMCallback);  
+      [id(7)] HRESULT GetImData([in] DWORD dwSize, [out] LPVOID pvImData);  
+      [id(8)] HRESULT SetImData([in] DWORD dwSize, [in] LPVOID pvImData);  
+      [id(9)] HRESULT UserOptionsDlg([in] HWND hwndParent);
+    }
+			
+	[   uuid(9ddb3921-3606-11d2-a2eb-0000f8757270), helpstring("IInputMethodEx")   ]
+	interface IInputMethodEx : IInputMethod
+	{
+	 [helpstring("method Select")] HRESULT Select([in] HWND hwndSip);
+	 [helpstring("method Deselect")] HRESULT Deselect();
+	 [helpstring("method Showing")] HRESULT Showing();
+	 [helpstring("method Hiding")] HRESULT Hiding();
+	 [helpstring("method GetInfo")] HRESULT GetInfo([out] long *pimi);
+	 [helpstring("method ReceiveSipInfo")] HRESULT ReceiveSipInfo([in] long *psi);
+	 [helpstring("method RegisterCallback")] HRESULT RegisterCallback([in] IIMCallback *lpIMCallback);
+	 [helpstring("method GetImData")] HRESULT GetImData([in] DWORD dwSize, [out] long *pvImData);
+	 [helpstring("method SetImData")] HRESULT SetImData([in] DWORD dwSize, [in] long *pvImData);
+	 [helpstring("method UserOptionsDlg")] HRESULT UserOptionsDlg([in] HWND hwndParent);
+	 [helpstring("method SetIMMActiveContext")] HRESULT SetIMMActiveContext([in] HWND hwnd, [in] BOOL bOpen, [in] DWORD dwConversion, [in] DWORD dwSentence, [in] DWORD hkl);
+	 [helpstring("method RegisterCallbackEx")] HRESULT RegisterCallbackEx([in] IIMCallbackEx* lpIMCallback);
+
+	}
+
+
+    [ uuid(e80d7526-58df-4142-a958-72490a691b46) ]
+
+    coclass CMSMVIm
+    {
+        [default] interface IInputMethod;
+    };      
+
+};
+
