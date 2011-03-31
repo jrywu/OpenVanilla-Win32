@@ -1,0 +1,80 @@
+//
+// Copyright (c) Microsoft Corporation.  All rights reserved.
+//
+//
+// Use of this sample source code is subject to the terms of the Microsoft
+// license agreement under which you licensed this sample source code. If
+// you did not accept the terms of the license agreement, you are not
+// authorized to use this sample source code. For the terms of the license,
+// please see the license agreement between you and Microsoft or, if applicable,
+// see the LICENSE.RTF on your install media or the root of your tools installation.
+// THE SAMPLE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
+//
+/*++
+
+Copyright (c) 1997 Microsoft Corporation
+
+Module Name:
+
+    sip_api.idl
+
+Abstract:
+
+    SIP application interfaces IDL file.
+
+Author:
+
+    Michael G. Toepke (mtoepke) 07-Apr-1997
+
+--*/
+
+#ifndef __SIPAPI_H__
+#define __SIPAPI_H__
+
+
+//
+// Flags in the fdwFlags field of SIPINFO.
+//
+typedef enum tagSipFlags {
+    SIPF_ON     = 1,
+    SIPF_DOCKED = 2,
+    SIPF_LOCKED = 4
+} SIPFLAGS;
+
+
+//
+// The SIPINFO structure.
+//
+typedef struct _tagSipInfo {
+    UINT cbSize;
+    UINT fdwFlags;
+    RECT rcVisibleDesktop;
+    RECT rcSipRect;    
+} SIPINFO;
+
+
+//
+// Values for the fWinIni parameter of SystemParametersInfo.  Currently
+// these are ignored. 
+//
+typedef enum tagSpiFlags {
+    SPIF_UPDATEINIFILE    = 0x0001,
+    SPIF_SENDWININICHANGE = 0x0002,
+    SPIF_SENDCHANGE       = SPIF_SENDWININICHANGE
+} SPIFLAGS;
+
+
+//
+// Supported system parameters.
+// The values below for SPI_SETSIPINFO and SPI_GETSIPINFO are bogus.  We
+// need to get actual reserved values from the Win32 folks.
+//
+typedef enum tagSPIArgs {
+    SPI_SETWORKAREA = 47,
+    SPI_GETWORKAREA = 48,
+    SPI_SETSIPINFO  = 300,
+    SPI_GETSIPINFO  = 301
+} SPIARGS;
+
+
+#endif // __SIPAPI_H_
