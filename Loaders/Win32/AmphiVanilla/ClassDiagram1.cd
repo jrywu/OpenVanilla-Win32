@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AVBuffer" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAgAAAQAAAAAAAAQAAAAAAAgAAIAEAAAAEQIA=</HashCode>
+      <FileName>AVBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVCandidate" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAABAAABAAAIIAJAEAAAAEAIA=</HashCode>
+      <FileName>AVCandidate.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVConfig" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARBAAAAAQAAAAAAAAABAAAAABAABAAAAAAAEAAAAAA=</HashCode>
+      <FileName>AVConfig.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVDictIter" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>AVDictionary.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVDictionary" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAAQAYAACAABABAACIAEBgIAQEIAgABgAAAAIkACg=</HashCode>
+      <FileName>AVDictionary.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVDisplayServer" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgBIAAAACAAAABEAAGBEAAQAAEIBAAYgAgIYABAA=</HashCode>
+      <FileName>AVDisplayServer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVEmbeddedLoader" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAADAAAAAAEAAAAAEACAgRAAAAAAAAIAAA=</HashCode>
+      <FileName>AVEmbeddedLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVKeyCode" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAQAgACIAEoAAkAAAAAIACAAEAAAQAQAAgAgAA=</HashCode>
+      <FileName>AVKeyCode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVLoader" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMAIAoICgACIUAIhACEgQAABAAACBAmJIIIiEAAAQIA=</HashCode>
+      <FileName>AVLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AVService" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABAAAAAABAACgAAIAAAGEAQGEAAwAYAACQAAAAIA=</HashCode>
+      <FileName>AVService.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DummyDisplayServer" Collapsed="true">
+    <Position X="0.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABIAAAAAAAAABEAAEAEAAQAAAABAAIAAgIYABAA=</HashCode>
+      <FileName>DummyDisplayServer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="sort_im" Collapsed="true">
+    <Position X="10.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAEAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>AVEmbeddedLoader.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="OVLibrary" Collapsed="true">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAACAAQAAAA=</HashCode>
+      <FileName>AVLoaderUtility.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0040_1" Collapsed="true">
+    <Position X="1.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0040_2" Collapsed="true">
+    <Position X="4.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAEAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="lt_user_dlloader" Collapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAIAAAAAAAABAABBAEAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="loadfunc" Collapsed="true">
+    <Position X="7" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AVLoaderUtility.cpp</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="TypeGetModule" Collapsed="true">
+    <Position X="7" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AVLoaderUtility.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="TypeInitLibrary" Collapsed="true">
+    <Position X="8.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AVLoaderUtility.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="TypeGetLibVersion" Collapsed="true">
+    <Position X="12.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AVLoaderUtility.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_dlhandle" Collapsed="true">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="LT_PARAMS" Collapsed="true">
+    <Position X="8.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_dlsymlist" Collapsed="true">
+    <Position X="1.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_dlinfo" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_dlcaller_id" Collapsed="true">
+    <Position X="8.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_dlloader" Collapsed="true">
+    <Position X="12.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_user_data" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="lt_module" Collapsed="true">
+    <Position X="7" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="__unnamed_enum_006a_1" Collapsed="true">
+    <Position X="8.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>APAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AVService.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_0040_3" Collapsed="true">
+    <Position X="7" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\OpenVanilla\dependencies\ltdl.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
