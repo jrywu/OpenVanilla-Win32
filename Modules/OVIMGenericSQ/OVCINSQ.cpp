@@ -95,18 +95,16 @@ OVCINSQ::OVCINSQ(const OVCINSQInfo& cininfo, SQLite3 *globaldb) : db(globaldb)
 	{
 		murmur("Parse table:%s into db.",tablename.c_str());
 
-		//db->execute("create temp table 'tempcin' (key, value, ord);");
-
-		Watch watch;
-		watch.start();
+		//Watch watch;
+		//watch.start();
 
 		OVFileHandler* fileHandler = new OVFileHandler(cininfo.longfilename.c_str());
 		vector<string> stringVector;
 		fileHandler->getLines(stringVector); 
 		delete fileHandler; 
 		
-		watch.stop(); 
-		murmur("reading cin into memory in %1.3f.\n",watch.getSec());
+		//watch.stop(); 
+		//murmur("reading cin into memory in %1.3f.\n",watch.getSec());
     
 		db->execute("PRAGMA journal_mode = OFF;");
 		db->execute("begin;");
@@ -115,19 +113,18 @@ OVCINSQ::OVCINSQ(const OVCINSQInfo& cininfo, SQLite3 *globaldb) : db(globaldb)
 		state = PARSE_LINE;
 		delimiters = " \t";
 		
-		watch.start();
+		//watch.start();
 		
 		parseCinVector(stringVector);
 		
-		watch.stop();
-		murmur("parsecinvector() in %1.3f.\n",watch.getSec());
+		//watch.stop();
+		//murmur("parsecinvector() in %1.3f.\n",watch.getSec());
 		
 		
 
 		// parse properties
 		for(int i=0;i< _OVCINSQ::NUM_PROPERTY; i++)
 		{
-			//db->execute("insert into 'tempcin' values ('_property_%q', '%q', -1);",  propertyNames[i], properties[i].c_str() );
 			db->execute("insert into '%q' values ('_property_%q', '%q', -1);",tablename.c_str(),  propertyNames[i], properties[i].c_str() );
 			murmur("parsing properties: insert into '%s' values ('_property_%s', '%s', -1);",tablename.c_str(), propertyNames[i], properties[i].c_str());
 		}
@@ -135,13 +132,6 @@ OVCINSQ::OVCINSQ(const OVCINSQInfo& cininfo, SQLite3 *globaldb) : db(globaldb)
  
 		db->execute("commit;");
 		murmur("commit;");
-
-		//watch.start();
-		
-		//db->execute("insert into '%q' select * from 'tempcin';", tablename.c_str());
-		
-		//watch.stop();
-		//murmur("copy temp table back in %1.3f.\n",watch.getSec());
 		
 
 	}
@@ -181,13 +171,13 @@ int OVCINSQ::setProperty(const string& key, const string& value){
     else if( value == "end" ){
         state = PARSE_LINE;
 		
-		Watch watch;
-		watch.start();
+		//Watch watch;
+		//watch.start();
 		
         setBlockMap();
 
-		watch.stop(); 
-		murmur("setBlockMap() in %1.3f.\n",watch.getSec());
+		//watch.stop(); 
+		//murmur("setBlockMap() in %1.3f.\n",watch.getSec());
 		
 
     }
@@ -205,17 +195,15 @@ int OVCINSQ::setProperty(const string& key, const string& value){
 void OVCINSQ::setBlockMap(){
     vector< pair<string, string> >::const_iterator it;
 	
-	Watch watch;
-	watch.start();
+	//Watch watch;
+	//watch.start();
     stable_sort(block_buf.begin(), block_buf.end(), cmpBlockEntry());
-	watch.stop();
-
-	murmur("stable_sort() in %1.3f.\n",watch.getSec());
+	//watch.stop();
+	//murmur("stable_sort() in %1.3f.\n",watch.getSec());
 	
  //   CinMap &curMap = maps[curMapIndex];
 	if(curMapIndex == _OVCINSQ::M_KEY && block_buf.size()) {
 		for(it = block_buf.begin(); it != block_buf.end(); ++it) {
-			//db->execute("insert into 'tempcin' values ('_key_%q', '%q', -1);", it->first.c_str(), it->second.c_str());
 			db->execute("insert into '%q' values ('_key_%q', '%q', -1);",tablename.c_str(), it->first.c_str(), it->second.c_str());
 			murmur("insert into '%s' values ('_key_%s', '%s', -1);",tablename.c_str(), it->first.c_str(), it->second.c_str());
 		}
@@ -225,19 +213,14 @@ void OVCINSQ::setBlockMap(){
 	int ord; 
 	string lastkey=string("");
 	for(it = block_buf.begin(); it != block_buf.end(); ++it) {
-        //if( !curMap.empty() && curMap.back().first == it->first )
-		if(lastkey==it->first){
-            //curMap.back().second.push_back(it->second);
-			db->execute("insert into '%q' values ('%q', '%q', %d);",tablename.c_str() , it->first.c_str(), it->second.c_str(), ++ord);
+        if(lastkey==it->first){
+        	db->execute("insert into '%q' values ('%q', '%q', %d);",tablename.c_str() , it->first.c_str(), it->second.c_str(), ++ord);
 		 	//murmur("insert into '%s' values ('%s', '%s', %d);",tablename.c_str(), it->first.c_str(), it->second.c_str(), ord);
 		}
         else{
-            //vector<string> v; 
-            //v.push_back(it->second);
-			ord=0;
+        	ord=0;
 			db->execute("insert into '%q' values ('%q', '%q', %d);",tablename.c_str(), it->first.c_str(), it->second.c_str(), ord);
 			//murmur("insert into '%s' values ('%s', '%s', %d);",tablename.c_str(), it->first.c_str(), it->second.c_str(), ord);
-            //curMap.push_back( make_pair( it->first, v) );
         }
 		lastkey = it->first;
 	}
@@ -263,29 +246,6 @@ void OVCINSQ::parseCinVector(const vector<string>& cinVector){
                 isBlockBegin = setProperty(key, value);
             if(state == PARSE_BLOCK && !isBlockBegin){
                 lowerStr(key);
-		/*		
-				if(curMapIndex == _OVCINSQ::M_KEY ){  //key 
-					db->execute("insert into '%q' values ('_key_%q', '%q', -1);", tablename.c_str(),key.c_str(), value.c_str());
-					murmur("insert into '%s' values ('_key_%s', '%s', -1);", tablename.c_str(),key.c_str(), value.c_str());
-				}
-				else
-				{
-					int ord=0;
-					SQLite3Statement *sth=db->prepare(
-						"select count(key) from '%q' where key = '%q';", tablename.c_str(), key.c_str()); 
-		
-					if (sth && sth->step()==SQLITE_ROW) 
-					{
-						ord=atoi(sth->column_text(0));
-						delete sth;
-					} 
-					
-					db->execute("insert into '%q' values ('%q', '%q', %d);", tablename.c_str(), key.c_str(), value.c_str(), ord);
-					//murmur("insert into 'tempcin' values ('%s', '%s', %d);",key.c_str(), value.c_str(), ord);
-
-
-				}
-		*/		
 				block_buf.push_back( make_pair(key, value) );
 				
             }
@@ -297,7 +257,6 @@ void OVCINSQ::lowerStr(string& str){
     for(int i=static_cast<int>(str.length())-1; i>=0; i--)
 		if(str[i]> 0x7E || str[i] < 0x20)// !isprint(str[i]) )
 				return;
-		//if(!isprint(str[i], m_locale))
     transform( str.begin(), str.end(), str.begin(),(int(*)(int)) tolower );
 }
 
@@ -315,8 +274,6 @@ size_t OVCINSQ::getCharVectorByKey(const string& inKey, vector<string>& outStrin
 	else  
 		return 0;
 
-
-    //return getVectorFromMap(maps[_OVCINSQ::M_KEY], inKey, outStringVectorRef);
 }
 
 
@@ -381,7 +338,6 @@ size_t OVCINSQ::getWordVectorByChar(const string& inKey,
 	murmur("getWordVectorByChar\n");
 	if(doAutocompose)
 	{
-		// if inkey.cstr="dj", ackey = "dk'. Select value for  key > inkey.cstr and key  < ackey is equivalent to select value for key ="dj*" with better efficiency.
 		strcpy(acKey, inKey.c_str());
 		acKey[inKey.length()-1]++;   
 		murmur("getWordVectorByChar::acKey:%s\n",acKey);
@@ -403,7 +359,7 @@ size_t OVCINSQ::getWordVectorByChar(const string& inKey,
 					, tablename.c_str(), inKey.c_str(), acKey, tablename.c_str()); 
 			db->execute("create temp view ceACV as select * from ceAC1 union all select * from ceAC2 where value not in (select value from ceAC1) group by value;");
 			sth = db->prepare("select value from ceACV order by key,\
-(select count from freq.phrase where key=ceACV.value)+0 desc, ord;");
+						(select count from freq.phrase where key=ceACV.value)+0 desc, ord;");
 
 		}
 		else
@@ -503,8 +459,6 @@ size_t OVCINSQ::getWordVectorByChar(const string& inKey,
 	else  
 		return 0;
 	
-
-    //return getVectorFromMap(maps[_OVCINSQ::M_CHAR], inKey, outStringVectorRef);
 }
 
 
@@ -533,58 +487,93 @@ size_t OVCINSQ::getCharVectorByWord(const string& inWord,
 }
 
 
-int OVCINSQ::updatePhraseUserFrequency(const char* phrase)
+int OVCINSQ::updatePhraseUserFrequency(const char* phrase, bool doLearnAssociatedPhrase, bool isAssociatedPhrase)
 {
 	
-//  update freq. table --------------------
 
-	SQLite3Statement *sth = db->prepare("select count from freq.phrase where key='%q';",phrase);
-	
-	if (sth && sth->step()==SQLITE_ROW)
+// Learn associated phrases and update associated phrase frequency
+	if(doLearnAssociatedPhrase && (!isAssociatedPhrase) )
 	{
-		int count = atoi(sth->column_text(0));
+		
+		string assocPhrase(lastPhrase);
+		assocPhrase.append(phrase);
+
+		SQLite3Statement *st1 = db->prepare("select count from freq.phrase where key='%q';",assocPhrase.c_str());
+		murmur("updatePhraseUserFreq:LearnAssociatedPhras: Lastphrase=%s phrase = %s;",lastPhrase.c_str(), phrase);
+		if (st1 && st1->step()==SQLITE_ROW)
+		{
+			int count = atoi(st1->column_text(0));
+			murmur("updatePhraseUserFreq: update freq.phrase set count='%d' where key='%s';",count+1, assocPhrase.c_str());
+			if (int err=db->execute("update freq.phrase set count='%d' where key='%q';",count+1, assocPhrase.c_str()))
+				murmur("SQLite3 insert freq phrase count error! code=%d", err);
+			delete st1;
+			
+		}
+		else if (lastPhrase.length()>0)
+		{
+			murmur("updatePhraseUserFreq: insert into freq.phrase values('%s','1');", assocPhrase.c_str());
+			if (int err=db->execute("insert into freq.phrase values('%q','1');", assocPhrase.c_str())) 
+				murmur("SQLite3 updatte freq phrase count error! code=%d", err);
+
+			murmur("updatePhraseUserFreq: insert into freq.phraseLearned values ('%s','%s', '0');",lastPhrase.c_str(), phrase);
+			if (int err=db->execute(	"insert into freq.phraseLearned values('%q','%q', '0');",lastPhrase.c_str(), phrase))
+					murmur("updatePhraseUserFreq: insert into freq.phraseLearned values ('%s','%s', '0') failed, errcode = '%d'!!;",lastPhrase.c_str(), phrase, err);
+		}
+		isLastAssociatedPhrase = isAssociatedPhrase;
+		lastPhrase=phrase;
+	}
+//  update frequency of current phrase
+	SQLite3Statement *st2 = db->prepare("select count from freq.phrase where key='%q';",phrase);
+	
+	if (st2 && st2->step()==SQLITE_ROW)
+	{
+		int count = atoi(st2->column_text(0));
 		murmur("updatePhraseUserFreq: update freq.phrase set count='%d' where key='%s';",count+1, phrase);
 		if (int err=db->execute("update freq.phrase set count='%d' where key='%q';",count+1, phrase)) 
-		{
-        murmur("SQLite3 insert freq phrase count error! code=%d", err);
-		return 1;
-		}
-		delete sth;
-			
+			murmur("SQLite3 insert freq phrase count error! code=%d", err);
+		delete st2;		
 	}
 	else
 	{
 		murmur("updatePhraseUserFreq: insert into freq.phrase values('%s','1');", phrase);
 		if (int err=db->execute("insert into freq.phrase values('%q','1');", phrase)) 
-		{
-        murmur("SQLite3 updatte freq phrase count error! code=%d", err);
-		return 1; 
-		}
-
+			murmur("SQLite3 updatte freq phrase count error! code=%d", err);
 	}
+	
 	
 
 	return 0;
 }
 
 
-size_t OVCINSQ::getAssociatedPhrases(const string& inWord, vector<string>& outStringVectorRef)
+size_t OVCINSQ::getAssociatedPhrases(const string& inWord, vector<string>& outStringVectorRef, bool doLearnAssociatedPhrase)
 {
-
-
-	SQLite3Statement *sth=db->prepare(
-		"select value from assoc where key = '%q' and ord >-1 order by \
-(select count from freq.phrase where key = assoc.key||assoc.value)+0 desc, ord;", inWord.c_str()); 
-
-	murmur("getAssociatedPhrases: select value from assoc where key = '%s' and ord >-1 order by \
-(select count from freq.phrase where key = assoc.key||assoc.value)+0 desc, ord;", inWord.c_str());
+	SQLite3Statement *sth;
+	if(doLearnAssociatedPhrase)
+	{
+		db->execute("drop view ASV;");
+		db->execute("create temp view ASV as \
+					select * from assoc where key = '%q' union all \
+					select * from freq.phraseLearned where key = '%q';", inWord.c_str(), inWord.c_str());
+		sth=db->prepare(
+			"select value from ASV order by \
+			 (select count from freq.phrase where key = ASV.key||ASV.value)+0 desc, ord;"); 
+	}
+	else
+	{
+		sth=db->prepare(
+			"select value from assoc where key = '%q' and ord >-1 order by \
+			 (select count from freq.phrase where key = assoc.key||assoc.value)+0 desc, ord;", inWord.c_str()); 
+		murmur("getAssociatedPhrases: select value from assoc where key = '%s' and ord >-1 order by \
+			  (select count from freq.phrase where key = assoc.key||assoc.value)+0 desc, ord;", inWord.c_str());
+	}
 
 	outStringVectorRef.clear();
 	if (sth){
 		while (sth->step()==SQLITE_ROW) 
 			outStringVectorRef.push_back( string(sth->column_text(0)));
 
-		murmur("\t get %d candidates.", outStringVectorRef.size());
+		murmur("\t getAssociatedPhrases: get %d candidates.", outStringVectorRef.size());
 		delete sth;
 		return outStringVectorRef.size();	
 		

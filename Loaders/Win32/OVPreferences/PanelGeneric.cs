@@ -30,6 +30,7 @@ namespace OVPreferences
         private string m_selectKey;
         private bool m_doAssociatedPhrase;
         private bool m_doOrderWordsByFreq;
+        private bool m_doLearnAssociatedPhrase;
 
 
 
@@ -89,6 +90,12 @@ namespace OVPreferences
                 Convert.ToBoolean(Convert.ToInt32(
                 m_ovConfDomHandler.GetAttribute(
                         m_ovConf.moduleName, "associatedPhrase", "1")));
+
+            m_doLearnAssociatedPhrase =
+                Convert.ToBoolean(Convert.ToInt32(
+                m_ovConfDomHandler.GetAttribute(
+                        m_ovConf.moduleName, "learnAssociatedPhrase", "1")));
+
             m_doOrderWordsByFreq = 
                 Convert.ToBoolean(Convert.ToInt32(
                 m_ovConfDomHandler.GetAttribute(
@@ -108,8 +115,10 @@ namespace OVPreferences
             m_cbWildCard.Checked = m_doWildcard;
             m_cbAssociatedPhrase.Checked = m_doAssociatedPhrase;
             m_cbOrderWordsByFreq.Checked = m_doOrderWordsByFreq;
+            m_cbLearnAssociatedPhrase.Checked = m_doLearnAssociatedPhrase;
             m_tbMatchOneChar.Text = m_matchOneChar.Substring(0, 1);
             m_tbMatchZeroOrMoreChar.Text = m_matchZeroOrMoreChar.Substring(0, 1);
+
 
 
             
@@ -207,6 +216,7 @@ namespace OVPreferences
 
         }
 
+        
         private void m_cbOrderWordsByFreq_CheckedChanged(object sender, EventArgs e)
         {
             m_doOrderWordsByFreq = m_cbOrderWordsByFreq.Checked;
@@ -242,6 +252,16 @@ namespace OVPreferences
                 m_ovConf.moduleName,
                 "matchOneChar",
                 m_matchOneChar);
+        }
+
+        private void m_cbLearnAssociatePhrase_CheckedChanged(object sender, EventArgs e)
+        {
+            m_doLearnAssociatedPhrase = m_cbLearnAssociatedPhrase.Checked;
+            m_ovConfDomHandler.SetAttribute(
+                m_ovConf.moduleName,
+                "learnAssociatedPhrase",
+                m_doLearnAssociatedPhrase ? "1" : "0");
+
         }
 
  

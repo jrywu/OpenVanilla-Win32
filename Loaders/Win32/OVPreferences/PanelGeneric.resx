@@ -112,20 +112,47 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbLearnAssociatedPhrase.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbLearnAssociatedPhrase.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 256</value>
+  </data>
+  <data name="m_cbLearnAssociatedPhrase.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 19</value>
+  </data>
+  <data name="m_cbLearnAssociatedPhrase.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_cbLearnAssociatedPhrase.Text" xml:space="preserve">
+    <value>自動學習聯想字詞</value>
+  </data>
+  <data name="&gt;&gt;m_cbLearnAssociatedPhrase.Name" xml:space="preserve">
+    <value>m_cbLearnAssociatedPhrase</value>
+  </data>
+  <data name="&gt;&gt;m_cbLearnAssociatedPhrase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbLearnAssociatedPhrase.Parent" xml:space="preserve">
+    <value>m_pnSelf</value>
+  </data>
+  <data name="&gt;&gt;m_cbLearnAssociatedPhrase.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_cbOrderWordsByFreq.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_cbOrderWordsByFreq.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbOrderWordsByFreq.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 230</value>
   </data>
@@ -142,13 +169,13 @@
     <value>m_cbOrderWordsByFreq</value>
   </data>
   <data name="&gt;&gt;m_cbOrderWordsByFreq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbOrderWordsByFreq.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbOrderWordsByFreq.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_cbAssociatedPhrase.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -172,13 +199,13 @@
     <value>m_cbAssociatedPhrase</value>
   </data>
   <data name="&gt;&gt;m_cbAssociatedPhrase.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbAssociatedPhrase.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbAssociatedPhrase.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_tbselectKey.Location" type="System.Drawing.Point, System.Drawing">
     <value>59, 174</value>
@@ -193,13 +220,13 @@
     <value>m_tbselectKey</value>
   </data>
   <data name="&gt;&gt;m_tbselectKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbselectKey.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_tbselectKey.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_tbMatchZeroOrMoreChar.Location" type="System.Drawing.Point, System.Drawing">
     <value>206, 149</value>
@@ -214,13 +241,13 @@
     <value>m_tbMatchZeroOrMoreChar</value>
   </data>
   <data name="&gt;&gt;m_tbMatchZeroOrMoreChar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbMatchZeroOrMoreChar.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_tbMatchZeroOrMoreChar.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_tbMatchOneChar.Location" type="System.Drawing.Point, System.Drawing">
     <value>105, 148</value>
@@ -238,13 +265,13 @@
     <value>m_tbMatchOneChar</value>
   </data>
   <data name="&gt;&gt;m_tbMatchOneChar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbMatchOneChar.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_tbMatchOneChar.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_tbmaxKeySequenceLength.Location" type="System.Drawing.Point, System.Drawing">
     <value>115, 105</value>
@@ -259,13 +286,13 @@
     <value>m_tbmaxKeySequenceLength</value>
   </data>
   <data name="&gt;&gt;m_tbmaxKeySequenceLength.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbmaxKeySequenceLength.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_tbmaxKeySequenceLength.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_cbWarningBeep.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -286,13 +313,13 @@
     <value>m_cbWarningBeep</value>
   </data>
   <data name="&gt;&gt;m_cbWarningBeep.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbWarningBeep.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbWarningBeep.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_cbHitMaxAndCompose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -313,13 +340,13 @@
     <value>m_cbHitMaxAndCompose</value>
   </data>
   <data name="&gt;&gt;m_cbHitMaxAndCompose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbHitMaxAndCompose.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbHitMaxAndCompose.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_cbAutoCompose.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -340,13 +367,13 @@
     <value>m_cbAutoCompose</value>
   </data>
   <data name="&gt;&gt;m_cbAutoCompose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbAutoCompose.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbAutoCompose.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_cbShiftSelectionKey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,13 +394,13 @@
     <value>m_cbShiftSelectionKey</value>
   </data>
   <data name="&gt;&gt;m_cbShiftSelectionKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbShiftSelectionKey.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbShiftSelectionKey.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_cbWildCard.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -397,13 +424,13 @@
     <value>m_cbWildCard</value>
   </data>
   <data name="&gt;&gt;m_cbWildCard.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbWildCard.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_cbWildCard.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_lbselectKey.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -427,13 +454,13 @@
     <value>m_lbselectKey</value>
   </data>
   <data name="&gt;&gt;m_lbselectKey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbselectKey.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_lbselectKey.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_lbMatchZeroOrMoreChar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,13 +484,13 @@
     <value>m_lbMatchZeroOrMoreChar</value>
   </data>
   <data name="&gt;&gt;m_lbMatchZeroOrMoreChar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbMatchZeroOrMoreChar.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_lbMatchZeroOrMoreChar.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_lbMatchOneChar.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -487,13 +514,13 @@
     <value>m_lbMatchOneChar</value>
   </data>
   <data name="&gt;&gt;m_lbMatchOneChar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbMatchOneChar.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_lbMatchOneChar.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_lbMaxKeySequenceLength.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -514,13 +541,13 @@
     <value>m_lbMaxKeySequenceLength</value>
   </data>
   <data name="&gt;&gt;m_lbMaxKeySequenceLength.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbMaxKeySequenceLength.Parent" xml:space="preserve">
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_lbMaxKeySequenceLength.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_pnSelf.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -541,7 +568,7 @@
     <value>m_pnSelf</value>
   </data>
   <data name="&gt;&gt;m_pnSelf.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pnSelf.Parent" xml:space="preserve">
     <value>$this</value>
@@ -549,7 +576,7 @@
   <data name="&gt;&gt;m_pnSelf.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -562,6 +589,6 @@
     <value>PanelGeneric</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

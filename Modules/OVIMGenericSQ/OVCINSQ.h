@@ -42,7 +42,6 @@
 #include <string>
 #include <vector>
 #include <map>
-//#include <locale>
 #include "OVSQLite3.h"
 #include "OVCINSQInfo.h"
 
@@ -96,59 +95,42 @@ private:
     vector< pair<string, string > > block_buf;
     CinMap maps[_OVCINSQ::NUM_MAP];
     int curMapIndex;
-//	locale m_locale;
 	
 	SQLite3 *db;
 	std::string tablename;
 
+	// Associated phrase learning
+	bool  isLastAssociatedPhrase;
+	string lastPhrase;
+
 public:    
 	
 
-    // VXCIN::read()
-    //OVCINSQ(const char* fileName);
 	OVCINSQ(const OVCINSQInfo& cininfo, SQLite3 *dbfile);
     
-    // VXCIN::selKey()
-    inline string& getSelKey();
-    
-    // VXCIN::name()
+    inline string& getSelKey();    
     inline string& getCName();
-    
-    // VXCIN::name()
     inline string& getEName();
-    
     inline string& getEndKey();
-    
     inline string& getEncoding();
-    
-    // VXCIN::isEndKey()
     inline bool isEndKey(char keyChar);
-    
     inline bool isValidKey(const string& keyString) const;
-    
-    // VXCIN::getKey()  //inline statement removed
     size_t getCharVectorByKey(const string& inKey, vector<string>& outStringVectorRef);
-    
-    // VXCIN::find()  //inline statement removed
     size_t getWordVectorByChar(const string& inKey, vector<string>& outStringVectorRef, bool doSmartorder=false, bool doAutocompose=false );
 	size_t getWordVectorByCharWithWildcardSupport(const string& inKey, vector<string>& outStringVectorRef, 
 		char matchOneChar = 0, char matchZeroOrMoreChar = 0, bool doSmartorder = false, bool doAutocompose = false);
-
 	size_t getCharVectorByWord(const string& inWord, vector<string>& outStringVectorRef);
 
 	// Associate phrase
-	size_t getAssociatedPhrases(const string& inWord, vector<string>& outStringVectorRef);
+	size_t getAssociatedPhrases(const string& inWord, vector<string>& outStringVectorRef, bool doLearnAssociatedPhrase);
 
 	// PhraseUserFreq
-	int updatePhraseUserFrequency(const char* phrase);
-
-
+	int updatePhraseUserFrequency(const char* phrase, bool doLearnAssociatedPhrase, bool isAssociatedPhrase);
     void show(const CinMap &m, int x);
     void runtest(const string &s);
     void test();
 
 protected:
-    
 					
     void lowerStr(string& str);
     void parseCinVector(const vector<string>& cinVector);
@@ -156,21 +138,6 @@ protected:
     int setProperty(const string& key, const string& value);
     void insertMap(const string& line);
 
-	/*
-	size_t getVectorFromMap(const CinMap& inMapRef,
-                         const string& inKey,
-                         vector<string>& outStringVectorRef);
-	size_t getVectorFromMapWithWildcardSupport(const CinMap& inMapRef,const string& inKey, vector<string>& outStringVectorRef, char matchOneChar = 0, char matchZeroOrMoreChar = 0);
-    
-	int searchCinMap(const CinMap& m, const string& key) const;
-    
-    
-    const pair<int, int> findRangeStartingWith(const CinMap& m,
-        const string& key) const;
-    int findClosestUpperBound(const CinMap& m, const string& key) const;
-    int findClosestLowerBound(const CinMap& m, const string& key) const;
-
-	*/
 };
 
 
@@ -221,12 +188,6 @@ bool OVCINSQ::isValidKey(const string& keyString) const
 	}
 	else return false;
 
-	/*
-    if( searchCinMap( maps[_OVCINSQ::M_KEY], keyString ) != -1 )
-        return true;
-    else
-        return false;
-		*/
 }
 
 

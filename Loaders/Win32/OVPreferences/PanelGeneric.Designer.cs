@@ -45,11 +45,13 @@ namespace OVPreferences
             this.m_lbMatchZeroOrMoreChar = new System.Windows.Forms.Label();
             this.m_lbMatchOneChar = new System.Windows.Forms.Label();
             this.m_lbMaxKeySequenceLength = new System.Windows.Forms.Label();
+            this.m_cbLearnAssociatedPhrase = new System.Windows.Forms.CheckBox();
             this.m_pnSelf.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_pnSelf
             // 
+            this.m_pnSelf.Controls.Add(this.m_cbLearnAssociatedPhrase);
             this.m_pnSelf.Controls.Add(this.m_cbOrderWordsByFreq);
             this.m_pnSelf.Controls.Add(this.m_cbAssociatedPhrase);
             this.m_pnSelf.Controls.Add(this.m_tbselectKey);
@@ -161,6 +163,13 @@ namespace OVPreferences
             resources.ApplyResources(this.m_lbMaxKeySequenceLength, "m_lbMaxKeySequenceLength");
             this.m_lbMaxKeySequenceLength.Name = "m_lbMaxKeySequenceLength";
             // 
+            // m_cbLearnAssociatedPhrase
+            // 
+            resources.ApplyResources(this.m_cbLearnAssociatedPhrase, "m_cbLearnAssociatedPhrase");
+            this.m_cbLearnAssociatedPhrase.Name = "m_cbLearnAssociatedPhrase";
+            this.m_cbLearnAssociatedPhrase.UseVisualStyleBackColor = true;
+            this.m_cbLearnAssociatedPhrase.CheckedChanged += new System.EventHandler(this.m_cbLearnAssociatePhrase_CheckedChanged);
+            // 
             // PanelGeneric
             // 
             resources.ApplyResources(this, "$this");
@@ -195,6 +204,7 @@ namespace OVPreferences
         private System.Windows.Forms.Label m_lbMatchOneChar;
         private System.Windows.Forms.CheckBox m_cbOrderWordsByFreq;
         private System.Windows.Forms.CheckBox m_cbAssociatedPhrase;
+        private System.Windows.Forms.CheckBox m_cbLearnAssociatedPhrase;
         
     }
 }

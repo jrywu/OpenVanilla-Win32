@@ -80,7 +80,7 @@ class OVGenericContext : public OVInputMethodContext
 {
 public:
     OVGenericContext(OVIMGeneric* p, OVCINSQ* tab) : 
-        parent(p), keyseq(tab), cintab(tab), autocomposing(false), assoconduty(false) {}
+        parent(p), keyseq(tab), cintab(tab), autocomposing(false), assoconduty(false){}
     virtual int keyEvent(OVKeyCode*, OVBuffer*, OVCandidate*, OVService*);
 	virtual void start(OVBuffer*, OVCandidate*, OVService*);
 	virtual void end();
@@ -102,8 +102,7 @@ protected:
     
     bool autocomposing;
     vector<string> candidateStringVector;
-
-	bool	assoconduty;
+	bool assoconduty;
 	string	resultbuf;
 };
 
@@ -129,6 +128,7 @@ public:
 	virtual char matchZeroOrMoreChar() { return cfgMatchZeroOrMoreChar; }
 	virtual bool isAssociatedPhrase() { return doAssociatedPhrase; }
 	virtual bool isOrderWordsByFreq() { return doOrderWordsByFreq; }
+	virtual bool isLearnAssociatedPhrase() { return doLearnAssociatedPhrase; }
 	
 	
 protected:
@@ -145,6 +145,7 @@ protected:
     int cfgHitMaxAndCompose;
 	bool doAssociatedPhrase;
 	bool doOrderWordsByFreq;
+	bool doLearnAssociatedPhrase;
 
 	char cfgMatchOneChar;
 	char cfgMatchZeroOrMoreChar;

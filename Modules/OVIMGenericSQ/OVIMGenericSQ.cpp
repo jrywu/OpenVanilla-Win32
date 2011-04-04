@@ -65,10 +65,13 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
 	murmur(" userSpacePath %s", userpath.c_str());
     // will be something like this on OS X:
     //     /Library/OpenVanilla/version/Modules/OVIMGeneric/
+	// will be something like this on Windows Vista/7+
+	//     c:\users\[username]\appdata\roadming\Openmanilla\OVIMGeneric
     string datapath=string(libpath) + string(pathsep) + string("OVIMGeneric");
 	murmur(" dataPath %s", datapath.c_str());
 
-// open db file in userspace ------------------ 
+
+    // open db file in userspace ------------------ 
 	murmur(" Initializing SQLite3 db files...");
 
 	db=new SQLite3;  
@@ -89,10 +92,16 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
 	murmur("Attach user freq table: attach \"%suserfreq.db\" as freq;", userpath);
 	if (int err=db->execute("attach \"%quserfreq.db\" as freq;", userpath))
 		murmur("SQLite3: attach user frequency db error! code=%d", err);
-	else if (int err=db->execute("create table freq.phrase (key, count);"))
+	if (int err=db->execute("create table freq.phrase (key, count);"))
 		murmur("SQLite3: create freq.phrase table error! code=%d", err);
-	else if (int err=db->execute("create index freq.phrase_index_key on phrase (key);"))
+	if (int err=db->execute("create index freq.phrase_index_key on phrase (key);"))
 		murmur("SQLite3: create freq.phrase table index error! code=%d", err);
+	if (int err=db->execute("create table freq.phraseLearned (key, value, ord);"))
+		murmur("SQLite3: create freq.phraseLearned table error! code=%d", err);
+	if (int err=db->execute("create index freq.phraseLearned_index_key on phraseLearned (key);"))
+		murmur("SQLite3: create freq.phraseLearned table key index error! code=%d", err);
+	if (int err=db->execute("create index freq.phraseLearned_index_value on phraseLearned (value);"))
+		murmur("SQLite3: create freq.phraseLearned table value index error! code=%d", err);
 	// ---------------------------------------------
 		        
     murmur("OVIMGeneric initializing");
@@ -100,22 +109,20 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
 	
 	
 
-	Watch watch;
+	//Watch watch;
     int loaded=0;
 
-    watch.start(); 
+    //watch.start(); 
     loaded += cinlist->load(userpath.c_str(), ".cin");
-    watch.stop();
+    //watch.stop();
 
-    murmur("Loaded modules from %s in %1.3f",
-        userpath.c_str(), watch.getSec());
+    //murmur("Loaded modules from %s in %1.3f",userpath.c_str(), watch.getSec());
 
-    watch.start(); 
+    //watch.start(); 
     loaded += cinlist->load(datapath.c_str(), ".cin");
-    watch.stop();
+    //watch.stop();
 
-    murmur("Loaded modules from %s in %1.3f",
-        datapath.c_str(), watch.getSec());
+    //murmur("Loaded modules from %s in %1.3f", datapath.c_str(), watch.getSec());
 
 	if (!loaded) 		loaded = cinlist->loadfromdb(db);
 	if (!loaded)
@@ -218,9 +225,9 @@ const char* OVIMGeneric::localizedName(const char* locale)
 
 int OVIMGeneric::initialize(OVDictionary* global, OVService* srv, const char*)
 {
-	srv->notify("Creating table index... Please wait..."); 
-    Watch watch;
-    watch.start();
+	//srv->notify("Creating table index... Please wait..."); 
+    //Watch watch;
+    //watch.start();
     if (!cintab) {
         cintab=new OVCINSQ(cininfo,db); //OVCINSQ(cininfo.longfilename.c_str()); 
      }
@@ -228,10 +235,9 @@ int OVIMGeneric::initialize(OVDictionary* global, OVService* srv, const char*)
 		assoctab = new OVCINSQ(associnfo,db);
 	}
 
-    watch.stop();
+    //watch.stop();
 	
-    murmur("OVIMGeneric: initializing %s in %1.3f sec",
-        identifier(), watch.getSec());
+    //murmur("OVIMGeneric: initializing %s in %1.3f sec", identifier(), watch.getSec());
     update(global, srv);
     return 1;
 }
@@ -244,8 +250,6 @@ void OVIMGeneric::update(OVDictionary* global, OVService*)
     cfgBeep=global->getInteger(CIN_WARNINGBEEP);
     cfgAutoCompose=global->getInteger(CIN_AUTOCOMPOSE);
     cfgHitMaxAndCompose=global->getInteger(CIN_HITMAX);
-	
-	
 
 	if(!global->getInteger(CIN_SHIFTSELECTIONKEY))
 	   doShiftSelKey = false;
@@ -260,6 +264,7 @@ void OVIMGeneric::update(OVDictionary* global, OVService*)
 	cfgMatchZeroOrMoreChar = cfgstr[0];
 
 	doAssociatedPhrase=global->getIntegerWithDefault(CIN_ASSOCIATEDPHRASE, 1) == 0 ? false : true;
+	doLearnAssociatedPhrase=global->getIntegerWithDefault(CIN_LEARNASSOCIATEDPHRASE, 0) == 0 ? false : true;
 
 #ifdef WINCE
 	doOrderWordsByFreq=global->getIntegerWithDefault(CIN_ORDERWORDSBYFREQ, 1) == 0 ? false : true;
@@ -318,8 +323,8 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 
             buf->clear()->append(output.c_str())->update()->send();
 			
-			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str()); // update user freq.
-			else	cintab->updatePhraseUserFrequency(output.c_str()); // update user freq.
+			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), (parent->isLearnAssociatedPhrase(),true); // update user freq.
+			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
 			resultbuf = output;
 
             keyseq.clear();
@@ -355,8 +360,8 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 			murmur("candi.select:%c", key->code());
             buf->clear()->append(output.c_str())->update()->send();
 			
-			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str()); // update user freq.
-			else	cintab->updatePhraseUserFrequency(output.c_str()); // update user freq.
+			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), parent->isLearnAssociatedPhrase(), true); // update user freq.
+			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
 			resultbuf = output;
 
             keyseq.clear();
@@ -366,7 +371,7 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 			if(assoconduty) assoconduty = false;
 			
 			if(parent->isAssociatedPhrase() &&
-				cintab->getAssociatedPhrases(output.c_str(), candidateStringVector)
+				cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())
 				) {
 			//Fetch associated phrase... 
 #if defined(WIN32) && !defined(WINCE)
@@ -582,15 +587,15 @@ int OVGenericContext::compose(OVBuffer *buf, OVCandidate *textbar, OVService *sr
     {
         buf->clear()->append(candidateStringVector[0].c_str())->update()->send();
 		
-		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+candidateStringVector[0]).c_str()); // update user freq.
-		else	cintab->updatePhraseUserFrequency(candidateStringVector[0].c_str()); // update user freq.
+		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+candidateStringVector[0]).c_str(),parent->isLearnAssociatedPhrase(),true); // update user freq.
+		else	cintab->updatePhraseUserFrequency(candidateStringVector[0].c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
 		resultbuf = candidateStringVector[0];
 
 
         keyseq.clear();
 		
 		if(parent->isAssociatedPhrase() &&
-			cintab->getAssociatedPhrases(candidateStringVector[0].c_str(), candidateStringVector)
+			cintab->getAssociatedPhrases(candidateStringVector[0].c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())
 		) {
 		// Fetch associated phrases.
 		
@@ -659,8 +664,8 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
 		murmur("candi.select: %c, %s\n",c, output);
         buf->clear()->append(output.c_str())->update()->send();
 
-		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str()); // update user freq.
-		else	cintab->updatePhraseUserFrequency(output.c_str()); // update user freq.
+		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), parent->isLearnAssociatedPhrase(), true); // update user freq.
+		else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(),false); // update user freq.
 		resultbuf = output;
 
 
@@ -668,7 +673,7 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
         textbar->hide()->clear();
 
 		if(parent->isAssociatedPhrase() &&
-			cintab->getAssociatedPhrases(output.c_str(), candidateStringVector)	
+			cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())	
 		) {
 		// Fetch associated phrases.
 		
@@ -691,7 +696,7 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
 
 		candi.select(candi.getSelKey()[0], output);
 		buf->clear()->append(output.c_str())->update()->send();
-		cintab->updatePhraseUserFrequency(output.c_str()); // update user freq. 
+		cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(),false); // update user freq. 
 
 		keyseq.add(c);
 		updateDisplay(buf);

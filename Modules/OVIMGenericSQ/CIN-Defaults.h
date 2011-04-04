@@ -49,6 +49,7 @@
 #define CIN_MATCHONECHAR		"matchOneChar"
 #define CIN_MATCHZEROORMORECHAR	"matchZeroOrMoreChar"
 #define CIN_ASSOCIATEDPHRASE	"associatedPhrase"
+#define CIN_LEARNASSOCIATEDPHRASE	"learnAssociatedPhrase"
 #define CIN_ORDERWORDSBYFREQ	"orderWordsByFreq"
 
 
