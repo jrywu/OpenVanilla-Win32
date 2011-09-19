@@ -13,7 +13,7 @@
     <ClCompile Include="OVPhoneticData.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SharedSource\OVPhoneticLib.cpp">
+    <ClCompile Include="..\SharedLibrary\OVPhoneticLib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

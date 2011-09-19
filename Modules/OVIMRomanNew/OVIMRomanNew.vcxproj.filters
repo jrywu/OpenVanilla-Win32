@@ -19,8 +19,5 @@
     <ClInclude Include="OVIMRomanNew.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVOSDef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

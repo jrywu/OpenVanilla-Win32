@@ -39,10 +39,7 @@
 	#include "OpenVanilla.h"
 	#include "OVLibrary.h"
 	#include "OVUtility.h"
-/*
-    #include <string.h>
-	#define strcasecmp stricmp
-*/
+
 #endif
 
 #include "OVOSDef.h"
@@ -93,6 +90,7 @@ protected:
     virtual int compose(OVBuffer *buf, OVCandidate *textbar, OVService *srv,  bool doAC = false);
     virtual int candidateEvent(OVKeyCode*, OVBuffer*, OVCandidate*, OVService*);
     virtual void cancelAutoCompose(OVCandidate *textbar);
+	virtual void updateFreqFetchAssociatedPhrase(const string& phrase, OVCandidate *textbar );
 	
     
     OVIMGeneric* parent;
@@ -103,14 +101,14 @@ protected:
     bool autocomposing;
     vector<string> candidateStringVector;
 	bool assoconduty;
-	string	resultbuf;
+	string	lastPhrase;
 };
 
 class OVIMGeneric : public OVInputMethod
 {
 public:
-    OVIMGeneric(const OVCINSQInfo& ci);
-	OVIMGeneric(const OVCINSQInfo& ci, const OVCINSQInfo& aci);
+    OVIMGeneric(const OVCINSQInfo& ci, SQLite3 *dbo);
+	OVIMGeneric(const OVCINSQInfo& ci, const OVCINSQInfo& aci, SQLite3 *dbo);
     virtual ~OVIMGeneric();
     virtual const char* identifier();
     virtual const char* localizedName(const char* locale);
@@ -126,9 +124,9 @@ public:
     
 	virtual char matchOneChar() { return cfgMatchOneChar; }
 	virtual char matchZeroOrMoreChar() { return cfgMatchZeroOrMoreChar; }
-	virtual bool isAssociatedPhrase() { return doAssociatedPhrase; }
-	virtual bool isOrderWordsByFreq() { return doOrderWordsByFreq; }
-	virtual bool isLearnAssociatedPhrase() { return doLearnAssociatedPhrase; }
+	virtual bool doAssociatedPhrase() { return cfgAssociatedPhrase; }
+	virtual bool doOrderWordsByFreq() { return cfgOrderWordsByFreq; }
+	virtual bool doLearnAssociatedPhrase() { return cfgLearnAssociatedPhrase; }
 	
 	
 protected:
@@ -136,6 +134,7 @@ protected:
 	OVCINSQInfo associnfo;
     OVCINSQ* cintab;
 	OVCINSQ* assoctab;
+	SQLite3 *db;
 
     string idstr;    
     
@@ -143,9 +142,9 @@ protected:
     int cfgBeep;
     int cfgAutoCompose;
     int cfgHitMaxAndCompose;
-	bool doAssociatedPhrase;
-	bool doOrderWordsByFreq;
-	bool doLearnAssociatedPhrase;
+	bool cfgAssociatedPhrase;
+	bool cfgOrderWordsByFreq;
+	bool cfgLearnAssociatedPhrase;
 
 	char cfgMatchOneChar;
 	char cfgMatchZeroOrMoreChar;

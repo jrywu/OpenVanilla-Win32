@@ -4,60 +4,36 @@
     <ClCompile Include="CIN-Defaults.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OVCandidateList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OVCINSQ.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OVCINSQInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OVFileHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OVIMGenericSQ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OVOFReverseLookup.cpp">
+    <ClCompile Include="OVOFReverseLookupSQ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\SharedSource\OVStringToolKit.cpp">
+    <ClCompile Include="..\SharedLibrary\OVCandidateList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedLibrary\OVFileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedLibrary\OVStringToolKit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedLibrary\OVCINSQ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SharedLibrary\OVCINSQInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GenericCandidateList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="CIN-Defaults.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVCandidateList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OVCINSQ.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OVCINSQInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVFileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OVIMGenericSQ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVKeySequence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OVOFReverseLookup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVSQLite3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SharedHeaders\OVStringToolKit.h">
+    <ClInclude Include="OVOFReverseLookupSQ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

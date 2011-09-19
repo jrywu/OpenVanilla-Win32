@@ -334,29 +334,33 @@ void RefreshUI(HIMC hUICurIMC)  //½Õ¾ãcomp cand
 
 		murmur("\tcandi position(%i, %i).",ptSrc.x, ptSrc.y); 
 		murmur("\tcandi size(%i, %i).", UIGetCandWidth(),UIGetCandHeight());
-		CandX= ptSrc.x;
-		CandY= ptSrc.y;
+		int newCandX= ptSrc.x;
+		int newCandY= ptSrc.y;
 
 
 		
-		if(CandX+UIGetCandWidth() > screenRC->right) 
-					CandX = screenRC->right - UIGetCandWidth();
+		if(newCandX+UIGetCandWidth() > screenRC->right) 
+					newCandX = screenRC->right - UIGetCandWidth();
 
-		NotifyX = CandX -UIGetNotifyWidth();// fixme-notify and candi window will overlapped becasue of offset_x on candi(for alignement right edge when scorolling).
+		NotifyX = newCandX -UIGetNotifyWidth();// fixme-notify and candi window will overlapped becasue of offset_x on candi(for alignement right edge when scorolling).
 		if(NotifyX <0)	
-			NotifyX = CandX + UIGetCandWidth();
+			NotifyX = newCandX + UIGetCandWidth();
 	
 		
-		NotifyY = CandY+ UIHeight*3/2;
-		if(CandY+UIGetCandHeight() > screenRC->bottom)
+		NotifyY = newCandY+ UIHeight*3/2;
+		if(newCandY+UIGetCandHeight() > screenRC->bottom)
 		{
-			CandY = CandY - 2*UIHeight - UIGetCandHeight();
+			newCandY = newCandY - 2*UIHeight - UIGetCandHeight();
 			NotifyY = NotifyY - 2*UIHeight - UIGetNotifyHeight();
 		}
 
-		murmur("moveCandi(%i, %i, %i)", 
-				CandX, CandY , UIHeight);
-		dsvr->moveCandi(CandX, CandY, UIHeight);
+		if( (abs(newCandX-CandX) > 2*UIHeight) || ( newCandY != CandY)) {
+			CandX = newCandX;
+			CandY = newCandY;
+			murmur("moveCandi(%i, %i, %i)", 
+					CandX, CandY , UIHeight);
+			dsvr->moveCandi(CandX, CandY, UIHeight);
+		}
 		
 
 	}

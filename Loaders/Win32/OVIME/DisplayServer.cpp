@@ -186,14 +186,15 @@ AVDisplayServer *DisplayServer::setCandiString(const char *str)
 {
 	wchar_t wstr[1024];
 	MultiByteToWideChar(CP_UTF8, 0, str, (int)strlen(str)+1, wstr, 1024);
-
 	ImmModel* model = ImmModel::open(m_hIMC);
-
 	wcscpy(model->getMyPrivate()->CandStr, wstr);
 	UpdateCandidate(model->getIMC(), wstr);
 //	MyGenerateMessage(hIMC,
 //			WM_IME_COMPOSITION, 0, GCS_COMPSTR);
-	UISetCandStr(model->getMyPrivate()->CandStr);
+//	UISetCandStr(model->getMyPrivate()->CandStr);
+
+	UISetCandStr(wstr);
+
 
 	ImmModel::close();
 	

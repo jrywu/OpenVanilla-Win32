@@ -62,10 +62,10 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)$(Configuration)\x86\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)$(Configuration)\x64\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)$(Configuration)\x86\</OutDir>
@@ -94,7 +94,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\Framework\Headers;..\SharedHeaders;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Framework\OpenVanilla\Headers;;..\SharedLibrary;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -127,7 +127,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\Framework\Headers;..\SharedHeaders;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Framework\OpenVanilla\Headers;;..\SharedLibrary;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -157,7 +157,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\Framework\Headers;..\SharedHeaders;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Framework\OpenVanilla\Headers;;..\SharedLibrary;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -187,7 +187,7 @@
       <MkTypLibCompatible>false</MkTypLibCompatible>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\Framework\Headers;..\SharedHeaders;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Framework\OpenVanilla\Headers;;..\SharedLibrary;..\..\Dep\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -211,32 +211,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\SharedLibrary\OVCandidateList.cpp" />
+    <ClCompile Include="..\SharedLibrary\OVCINSQ.cpp" />
+    <ClCompile Include="..\SharedLibrary\OVCINSQInfo.cpp" />
+    <ClCompile Include="..\SharedLibrary\OVFileHandler.cpp" />
+    <ClCompile Include="..\SharedLibrary\OVStringToolKit.cpp" />
     <ClCompile Include="CIN-Defaults.cpp" />
-    <ClCompile Include="OVCandidateList.cpp" />
-    <ClCompile Include="OVCINSQ.cpp" />
-    <ClCompile Include="OVCINSQInfo.cpp" />
-    <ClCompile Include="OVFileHandler.cpp" />
     <ClCompile Include="OVIMGenericSQ.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)%(Filename)1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)%(Filename)1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="OVOFReverseLookup.cpp" />
-    <ClCompile Include="..\SharedSource\OVStringToolKit.cpp" />
+    <ClCompile Include="OVOFReverseLookupSQ.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CIN-Defaults.h" />
-    <ClInclude Include="GenericCandidateList.h" />
-    <ClInclude Include="..\SharedHeaders\OVCandidateList.h" />
-    <ClInclude Include="OVCINSQ.h" />
-    <ClInclude Include="OVCINSQInfo.h" />
-    <ClInclude Include="..\SharedHeaders\OVFileHandler.h" />
     <ClInclude Include="OVIMGenericSQ.h" />
-    <ClInclude Include="..\SharedHeaders\OVKeySequence.h" />
-    <ClInclude Include="OVOFReverseLookup.h" />
-    <ClInclude Include="..\SharedHeaders\OVSQLite3.h" />
-    <ClInclude Include="..\SharedHeaders\OVStringToolKit.h" />
+    <ClInclude Include="OVOFReverseLookupSQ.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

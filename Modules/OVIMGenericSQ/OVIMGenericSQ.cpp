@@ -32,14 +32,14 @@
 #define wildcardAutoCompose
 
 #include "OVIMGenericSQ.h"
-#include "OVOFReverseLookup.h"
+#include "OVOFReverseLookupSQ.h"
 #include "CIN-Defaults.h"
 
 
 using namespace std;
 
 OVCINSQList *cinlist=NULL;
-SQLite3 *db=NULL;
+//SQLite3 *db=NULL;
 
 extern "C" unsigned int OVGetLibraryVersion() {
     return OV_VERSION;
@@ -52,12 +52,7 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
     }
 
     const char *pathsep=s->pathSeparator();
-        
-    cinlist = new OVCINSQList(pathsep);
-    if (!cinlist) return false;
-
-
-
+ 
     // will be something like this on OS X:
     //     ~/Library/OpenVanilla/version/UserSpace/OVIMGeneric/
     string userpath=s->userSpacePath("OVIMGeneric");
@@ -68,47 +63,15 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
 	// will be something like this on Windows Vista/7+
 	//     c:\users\[username]\appdata\roadming\Openmanilla\OVIMGeneric
     string datapath=string(libpath) + string(pathsep) + string("OVIMGeneric");
+
 	murmur(" dataPath %s", datapath.c_str());
-
-
-    // open db file in userspace ------------------ 
-	murmur(" Initializing SQLite3 db files...");
-
-	db=new SQLite3;  
-    string dbfile = userpath + string("OVIMGeneric.db");
-
-	murmur("dbfile:%s",dbfile.c_str());
-	if (int err=db->open(dbfile.c_str())) 
-        murmur("SQLite3 error! code=%d", err);
-   	 
-	if (int err=db->execute(
-		"create table tablelist (name, shortfilename, longfilename, ename, cname, tcname, scname, dwHighTimeStamp, dwLowTimeStamp);"))
-		murmur("SQLite3 create table error! code=%d", err);
-
+ 
+    string dbfile = userpath + string("imdb.db");
+	string userdbfile = userpath + string("userdb.db");
+	cinlist = new OVCINSQList(pathsep, dbfile.c_str(), userdbfile.c_str());
+    if (!cinlist) return false;
 
 	
-	// Attach user frequency database...
-
-	murmur("Attach user freq table: attach \"%suserfreq.db\" as freq;", userpath);
-	if (int err=db->execute("attach \"%quserfreq.db\" as freq;", userpath))
-		murmur("SQLite3: attach user frequency db error! code=%d", err);
-	if (int err=db->execute("create table freq.phrase (key, count);"))
-		murmur("SQLite3: create freq.phrase table error! code=%d", err);
-	if (int err=db->execute("create index freq.phrase_index_key on phrase (key);"))
-		murmur("SQLite3: create freq.phrase table index error! code=%d", err);
-	if (int err=db->execute("create table freq.phraseLearned (key, value, ord);"))
-		murmur("SQLite3: create freq.phraseLearned table error! code=%d", err);
-	if (int err=db->execute("create index freq.phraseLearned_index_key on phraseLearned (key);"))
-		murmur("SQLite3: create freq.phraseLearned table key index error! code=%d", err);
-	if (int err=db->execute("create index freq.phraseLearned_index_value on phraseLearned (value);"))
-		murmur("SQLite3: create freq.phraseLearned table value index error! code=%d", err);
-	// ---------------------------------------------
-		        
-    murmur("OVIMGeneric initializing");
-
-	
-	
-
 	//Watch watch;
     int loaded=0;
 
@@ -124,43 +87,38 @@ extern "C" int OVInitializeLibrary(OVService *s, const char *libpath) {
 
     //murmur("Loaded modules from %s in %1.3f", datapath.c_str(), watch.getSec());
 
-	if (!loaded) 		loaded = cinlist->loadfromdb(db);
+	if (!loaded) 		loaded = cinlist->loadfromdb();
 	if (!loaded)
 	{
 	        murmur ("OVIMGeneric: nothing loaded, init failed");
 		    return false;
 	}
     
-
     return true;
 }
 extern "C" OVModule *OVGetModuleFromLibrary(int x) {
-	murmur("OVGetModuleFromLibrary:%d", x);
+	murmur("OVGetModuleFromLibrary:%d; cinlist->count:%d", x , cinlist->count());
 	
 	if(cinlist->count() == 0 ) return NULL; 
 
-	size_t assocfound=0;
-	
-	if(!_stricmp(cinlist->cinInfo(0).shortfilename.c_str(),"assoc.cin"))  assocfound = 1;	
-	
-	
-	
-	if ((size_t)x < ( cinlist->count()-assocfound))    // IM Modules
+		
+	if ((size_t)x < ( cinlist->count() ))    // IM Modules
 	{
 
-		murmur("OVGetModuleFromLibrary:%s", cinlist->cinInfo((size_t)x + assocfound).shortfilename.c_str());
+		murmur("OVGetModuleFromLibrary:%s", cinlist->cinInfo((size_t)x).shortfilename.c_str());
 	
-		if(assocfound)
-			return new OVIMGeneric(cinlist->cinInfo((size_t)x + 1), cinlist->cinInfo(0));
-		else
-			return new OVIMGeneric(cinlist->cinInfo((size_t)x));
+		//if(cinlist->getAssocCinInfo().shortfilename =="assoc.cin") {
+			return new OVIMGeneric(cinlist->cinInfo((size_t)x), cinlist->getAssocCinInfo(), cinlist->getdb());
+		//}
+		//else
+		//	return new OVIMGeneric(cinlist->cinInfo((size_t)x), cinlist->getdb());
 	}
 #ifndef WINCE 
-	else if ((size_t)x < 2*( cinlist->count()-assocfound))  // Reverse lookup
+	else if ((size_t)x < 2* cinlist->count())  // Reverse lookup
 	{
-		size_t y = x - (cinlist->count() - assocfound) + assocfound;
+		size_t y = x - (cinlist->count()) ;
 		murmur("OVGetModuleFromLibrary:%s", cinlist->cinInfo(y).shortfilename.c_str());
-		return new OVOFReverseLookup(cinlist->cinInfo(y));
+		return new OVOFReverseLookup(cinlist->cinInfo(y), cinlist->getdb());
 
 	}
 #endif
@@ -199,11 +157,11 @@ string *GenericKeySequence::compose(string *s)
     return s;
 }
 
-OVIMGeneric::OVIMGeneric(const OVCINSQInfo& ci) : cininfo(ci), cintab(NULL), assoctab(NULL) {
+OVIMGeneric::OVIMGeneric(const OVCINSQInfo& ci, SQLite3 *dbo) : cininfo(ci), cintab(NULL), assoctab(NULL), db(dbo) {
     idstr = "OVIMGeneric-" + cininfo.shortfilename;
 }
 
-OVIMGeneric::OVIMGeneric(const OVCINSQInfo& ci, const OVCINSQInfo& aci) : cininfo(ci), associnfo(aci), cintab(NULL), assoctab(NULL) {
+OVIMGeneric::OVIMGeneric(const OVCINSQInfo& ci, const OVCINSQInfo& aci, SQLite3 *dbo) : cininfo(ci), associnfo(aci), cintab(NULL), assoctab(NULL), db(dbo) {
     idstr = "OVIMGeneric-" + cininfo.shortfilename;
 }
 
@@ -225,11 +183,11 @@ const char* OVIMGeneric::localizedName(const char* locale)
 
 int OVIMGeneric::initialize(OVDictionary* global, OVService* srv, const char*)
 {
-	//srv->notify("Creating table index... Please wait..."); 
+	srv->notify("Creating table index... Please wait..."); 
     //Watch watch;
     //watch.start();
     if (!cintab) {
-        cintab=new OVCINSQ(cininfo,db); //OVCINSQ(cininfo.longfilename.c_str()); 
+        cintab=new OVCINSQ(cininfo,db); 
      }
 	if(associnfo.shortfilename == string("assoc.cin") && !assoctab)	{
 		assoctab = new OVCINSQ(associnfo,db);
@@ -263,13 +221,13 @@ void OVIMGeneric::update(OVDictionary* global, OVService*)
 	cfgstr = global->getStringWithDefault(CIN_MATCHZEROORMORECHAR, "*");
 	cfgMatchZeroOrMoreChar = cfgstr[0];
 
-	doAssociatedPhrase=global->getIntegerWithDefault(CIN_ASSOCIATEDPHRASE, 1) == 0 ? false : true;
-	doLearnAssociatedPhrase=global->getIntegerWithDefault(CIN_LEARNASSOCIATEDPHRASE, 0) == 0 ? false : true;
+	cfgAssociatedPhrase=global->getIntegerWithDefault(CIN_ASSOCIATEDPHRASE, 1) == 0 ? false : true;
+	cfgLearnAssociatedPhrase=global->getIntegerWithDefault(CIN_LEARNASSOCIATEDPHRASE, 1) == 0 ? false : true;
 
 #ifdef WINCE
-	doOrderWordsByFreq=global->getIntegerWithDefault(CIN_ORDERWORDSBYFREQ, 1) == 0 ? false : true;
+	cfgOrderWordsByFreq=global->getIntegerWithDefault(CIN_ORDERWORDSBYFREQ, 1) == 0 ? false : true;
 #else
-	doOrderWordsByFreq=global->getIntegerWithDefault(CIN_ORDERWORDSBYFREQ, 0) == 0 ? false : true;
+	cfgOrderWordsByFreq=global->getIntegerWithDefault(CIN_ORDERWORDSBYFREQ, 0) == 0 ? false : true;
 #endif
 
 	
@@ -307,9 +265,9 @@ void OVGenericContext::clear() {
     candi.cancel();
 }
 
-int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textbar, 
-    OVService *srv)
-{
+
+
+int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textbar, OVService *srv) {
 	//murmur("OVGenericContext::Keyevent:%c; assoconduty:%d",key->code(), assoconduty);
     if (candi.onDuty())
     {
@@ -322,25 +280,26 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 			murmur("select candi from UI: dwselection %i", key->code());
 
             buf->clear()->append(output.c_str())->update()->send();
-			
-			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), (parent->isLearnAssociatedPhrase(),true); // update user freq.
-			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
-			resultbuf = output;
 
             keyseq.clear();
             cancelAutoCompose(textbar);
+			updateFreqFetchAssociatedPhrase(output,textbar);
+/*-------------------------------
+			if(assoconduty) cintab->updatePhraseUserFrequency((lastPhrase+output).c_str(), (parent->doLearnAssociatedPhrase(),true); // update user freq.
+			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->doLearnAssociatedPhrase(), false); // update user freq.
+			lastPhrase = output;
 
 			if(assoconduty) assoconduty = false;
 			
-			if(parent->isAssociatedPhrase() &&
+			if(parent->doAssociatedPhrase() &&
 				cintab->getAssociatedPhrases(output.c_str(), candidateStringVector)
 				) {
 			//Fetch associated phrase... 
 			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar); 
 			assoconduty = true;
-			//..........................
+			
 			}
-
+*///..........................
             return 1;
 		}
 #endif  
@@ -359,19 +318,22 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
         {
 			murmur("candi.select:%c", key->code());
             buf->clear()->append(output.c_str())->update()->send();
-			
-			if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), parent->isLearnAssociatedPhrase(), true); // update user freq.
-			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
-			resultbuf = output;
-
             keyseq.clear();
-            cancelAutoCompose(textbar);
+            cancelAutoCompose(textbar);			
+
+			updateFreqFetchAssociatedPhrase(output, textbar);
+/*/==========
+			if(assoconduty) cintab->updatePhraseUserFrequency((lastPhrase+output).c_str(), parent->doLearnAssociatedPhrase(), true); // update user freq.
+			else	cintab->updatePhraseUserFrequency(output.c_str(), parent->doLearnAssociatedPhrase(), false); // update user freq.
+			lastPhrase = output;
+
+
 
 
 			if(assoconduty) assoconduty = false;
 			
-			if(parent->isAssociatedPhrase() &&
-				cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())
+			if(parent->doAssociatedPhrase() &&
+				cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->doLearnAssociatedPhrase())
 				) {
 			//Fetch associated phrase... 
 #if defined(WIN32) && !defined(WINCE)
@@ -380,8 +342,9 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar); 
 #endif
 			assoconduty = true;
-			//..........................
 			}
+*///..........................
+			
 
             return 1;
         }
@@ -416,9 +379,9 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
 						
 			if (cintab->getWordVectorByCharWithWildcardSupport(
 #ifdef wildcardAutoCompose
-				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->isOrderWordsByFreq()), true)
+				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->doOrderWordsByFreq()), true)
 #else
-				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->isOrderWordsByFreq()))
+				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->doOrderWordsByFreq()))
 #endif
             {
                 autocomposing=true;
@@ -493,7 +456,7 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
     		keyseq.length() == parent->maxSeqLen())
     	{
             updateDisplay(buf);
-			//srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4");
+			srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4 1"); //«öÁä¦³»~
             if (parent->isBeep())
 				srv->beep();
             return 1;
@@ -522,9 +485,9 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
         {
             if (cintab->getWordVectorByChar(keyseq.getSeq(),
 #ifdef wildcardAutoCompose
-				candidateStringVector, parent->isOrderWordsByFreq(), true ))
+				candidateStringVector, parent->doOrderWordsByFreq(), true ))
 #else
-				candidateStringVector, parent->isOrderWordsByFreq()))
+				candidateStringVector, parent->doOrderWordsByFreq()))
 #endif
             {
                 autocomposing=1;
@@ -541,7 +504,7 @@ int OVGenericContext::keyEvent(OVKeyCode *key, OVBuffer *buf, OVCandidate *textb
     }
     
     if (!buf->isEmpty()) {
-		//srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4");
+		srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4 2"); //«öÁä¦³»~
         if (parent->isBeep())
 			srv->beep();
         return 1;
@@ -573,11 +536,11 @@ int OVGenericContext::compose(OVBuffer *buf, OVCandidate *textbar, OVService *sr
     if (!keyseq.length()) return 0;
 	size =
 		cintab->getWordVectorByCharWithWildcardSupport( 
-				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->isOrderWordsByFreq(), doAC);
+				keyseq.getSeq(), candidateStringVector, parent->matchOneChar(), parent->matchZeroOrMoreChar(), parent->doOrderWordsByFreq(), doAC);
 	
     if (size == 0)
     {
-		//srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4");
+		srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4 3"); //«öÁä¦³»~
         if (parent->isBeep())
 			srv->beep();
         return 1;
@@ -586,16 +549,18 @@ int OVGenericContext::compose(OVBuffer *buf, OVCandidate *textbar, OVService *sr
     if (size ==1 && !autocomposing)
     {
         buf->clear()->append(candidateStringVector[0].c_str())->update()->send();
-		
-		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+candidateStringVector[0]).c_str(),parent->isLearnAssociatedPhrase(),true); // update user freq.
-		else	cintab->updatePhraseUserFrequency(candidateStringVector[0].c_str(), parent->isLearnAssociatedPhrase(), false); // update user freq.
-		resultbuf = candidateStringVector[0];
-
 
         keyseq.clear();
+		updateFreqFetchAssociatedPhrase(candidateStringVector[0],textbar);
 		
-		if(parent->isAssociatedPhrase() &&
-			cintab->getAssociatedPhrases(candidateStringVector[0].c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())
+/*//---------------------------------				
+		if(assoconduty) cintab->updatePhraseUserFrequency((lastPhrase+candidateStringVector[0]).c_str(),parent->doLearnAssociatedPhrase(),true); // update user freq.
+		else	cintab->updatePhraseUserFrequency(candidateStringVector[0].c_str(), parent->doLearnAssociatedPhrase(), false); // update user freq.
+		lastPhrase = candidateStringVector[0];
+
+
+		if(parent->doAssociatedPhrase() &&
+			cintab->getAssociatedPhrases(candidateStringVector[0].c_str(), candidateStringVector, parent->doLearnAssociatedPhrase())
 		) {
 		// Fetch associated phrases.
 		
@@ -605,9 +570,9 @@ int OVGenericContext::compose(OVBuffer *buf, OVCandidate *textbar, OVService *sr
 			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar); 
 #endif
 			assoconduty = true;
-		// .........................
-		}
 		
+		}
+*/// .........................
         return 1;
     }
 
@@ -664,16 +629,19 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
 		murmur("candi.select: %c, %s\n",c, output);
         buf->clear()->append(output.c_str())->update()->send();
 
-		if(assoconduty) cintab->updatePhraseUserFrequency((resultbuf+output).c_str(), parent->isLearnAssociatedPhrase(), true); // update user freq.
-		else	cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(),false); // update user freq.
-		resultbuf = output;
-
-
         candi.cancel();
         textbar->hide()->clear();
+		
+		updateFreqFetchAssociatedPhrase(output,textbar);
+/*/---------------
+		if(assoconduty) cintab->updatePhraseUserFrequency((lastPhrase+output).c_str(), parent->doLearnAssociatedPhrase(), true); // update user freq.
+		else	cintab->updatePhraseUserFrequency(output.c_str(), parent->doLearnAssociatedPhrase(),false); // update user freq.
+		lastPhrase = output;
+//----------------
 
-		if(parent->isAssociatedPhrase() &&
-			cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->isLearnAssociatedPhrase())	
+
+		if(parent->doAssociatedPhrase() &&
+			cintab->getAssociatedPhrases(output.c_str(), candidateStringVector, parent->doLearnAssociatedPhrase())	
 		) {
 		// Fetch associated phrases.
 		
@@ -683,32 +651,35 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
 			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar); 
 #endif		
 			assoconduty = true;
-		//----------------------------
+		
 		}
-
+*///----------------------------
         return 1;
     }
 
 	string inKey;
 	inKey.push_back(c);
     if (cintab->isValidKey(inKey) || cintab->isEndKey(c)) {
+
         string output;
 
 		candi.select(candi.getSelKey()[0], output);
 		buf->clear()->append(output.c_str())->update()->send();
-		cintab->updatePhraseUserFrequency(output.c_str(), parent->isLearnAssociatedPhrase(),false); // update user freq. 
+		// update user freq only. no associated phrases because endkey is used to end the composition.
+		cintab->updatePhraseUserFrequency(output.c_str(), parent->doLearnAssociatedPhrase(),false); 
 
 		keyseq.add(c);
 		updateDisplay(buf);
 		candi.cancel();
 		textbar->hide()->clear();
+
 		if(cintab->isEndKey(c))
 			compose(buf, textbar, srv);
 		
 		return 1;			
     }
 	
-	//srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4");
+	srv->notify("\xE6\x8C\x89\xE9\x8D\xB5\xE6\x9C\x89\xE8\xAA\xA4 4"); //«öÁä¦³»~
 	if (parent->isBeep())
 		srv->beep();
 
@@ -716,3 +687,24 @@ int OVGenericContext::candidateEvent(OVKeyCode *key, OVBuffer *buf,
 }
 
 
+void OVGenericContext::updateFreqFetchAssociatedPhrase(const string& phrase, OVCandidate *textbar ){
+
+	if(assoconduty) cintab->updatePhraseUserFrequency((lastPhrase + phrase).c_str(), parent->doLearnAssociatedPhrase(), true); // update user freq.
+	else	cintab->updatePhraseUserFrequency(phrase.c_str(), parent->doLearnAssociatedPhrase(), false); // update user freq.
+			lastPhrase = phrase;
+
+			if(assoconduty) assoconduty = false;
+			
+			if( parent->doAssociatedPhrase() &&
+				cintab->getAssociatedPhrases(phrase, candidateStringVector, parent->doLearnAssociatedPhrase())
+				) {
+			//Fetch associated phrase... 
+#if defined(WIN32) && !defined(WINCE)
+			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar, "1234567890", string("Shift+#\xE3\x80\x80"));
+#else
+			candi.prepare(&candidateStringVector, "!@#$%^&*()", textbar); 
+#endif
+			assoconduty = true;
+			}
+
+}
